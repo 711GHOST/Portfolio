@@ -52,8 +52,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
           <p className="text-xs text-foreground/40">
-            © {new Date().getFullYear()} {PROFILE.name}. Crafted with Next.js,
-            Three.js & a lot of neon.
+            © {new Date().getFullYear()} {PROFILE.name}.
           </p>
           <Magnetic>
             <a

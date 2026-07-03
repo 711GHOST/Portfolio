@@ -1,28 +1,61 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Send, Terminal, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Send,
+  Terminal,
+  CheckCircle2,
+  Loader2,
+  AlertTriangle,
+} from "lucide-react";
 import { PROFILE } from "@/lib/data";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/shared/magnetic";
 
+// Formspree endpoint — submissions land in your inbox.
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvdwdpk";
+
+type Status = "idle" | "sending" | "success" | "error";
+
 export function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    // Compose a mailto so the message actually goes somewhere without a backend.
-    const subject = encodeURIComponent(`Portfolio contact from ${form.name}`);
-    const body = encodeURIComponent(
-      `${form.message}\n\n- ${form.name} (${form.email})`
-    );
-    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
-    setTimeout(() => setSent(false), 4000);
+    if (status === "sending") return;
+    setStatus("sending");
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          _subject: `Portfolio contact from ${form.name}`,
+        }),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        setForm({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        setStatus("error");
+        setTimeout(() => setStatus("idle"), 5000);
+      }
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   const inputClass =
@@ -114,10 +147,15 @@ export function Contact() {
                     variant="gradient"
                     size="lg"
                     className="w-full"
+                    disabled={status === "sending"}
                   >
-                    {sent ? (
+                    {status === "sending" ? (
                       <>
-                        <CheckCircle2 className="h-4 w-4" /> Message Composed
+                        <Loader2 className="h-4 w-4 animate-spin" /> Transmitting…
+                      </>
+                    ) : status === "success" ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" /> Message Sent
                       </>
                     ) : (
                       <>
@@ -126,6 +164,34 @@ export function Contact() {
                     )}
                   </Button>
                 </Magnetic>
+
+                {/* Status line */}
+                <AnimatePresence mode="wait">
+                  {status === "success" && (
+                    <motion.p
+                      key="ok"
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2 font-mono text-xs text-green-400"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      Transmission received — I&apos;ll reply within 24 hours.
+                    </motion.p>
+                  )}
+                  {status === "error" && (
+                    <motion.p
+                      key="err"
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center gap-2 font-mono text-xs text-red-400"
+                    >
+                      <AlertTriangle className="h-3.5 w-3.5" />
+                      Something glitched. Email me directly at {PROFILE.email}.
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </form>
 
               {/* Side panel */}
