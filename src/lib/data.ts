@@ -210,7 +210,7 @@ export const PROJECTS: Project[] = [
     accent: "#3b82f6",
     featured: true,
     github: "https://github.com/Research-Scholar-Agent",
-    demo: "https://research-scholar-agent-delta.vercel.app/",
+    demo: "https://research-scholar-agent-delta.vercel.app",
     highlights: [
       "Autonomous multi-step research loop",
       "Grounded, citation-backed answers",
@@ -227,7 +227,7 @@ export const PROJECTS: Project[] = [
     accent: "#ec4899",
     featured: true,
     github: "https://github.com/711GHOST/Assessment_Track_B",
-    demo: "https://assessment-track-b.vercel.app/",
+    demo: "https://rag-application-kohl.vercel.app",
     highlights: [
       "Semantic vector retrieval + re-ranking",
       "Source-grounded generation",
