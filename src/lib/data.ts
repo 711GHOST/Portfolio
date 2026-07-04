@@ -210,7 +210,7 @@ export const PROJECTS: Project[] = [
     accent: "#3b82f6",
     featured: true,
     github: "https://github.com/Research-Scholar-Agent",
-    demo: "#",
+    demo: "https://research-scholar-agent-delta.vercel.app/",
     highlights: [
       "Autonomous multi-step research loop",
       "Grounded, citation-backed answers",
