@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SKILLS } from "@/lib/data";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -57,9 +57,11 @@ function Orbit({ items, radius, duration, reverse, onHover, active }: OrbitProps
               <button
                 onMouseEnter={() => onHover(skill.name)}
                 onMouseLeave={() => onHover(null)}
+                onClick={() => onHover(isActive ? null : skill.name)}
+                aria-label={skill.name}
                 data-cursor="hover"
                 className={cn(
-                  "group flex h-14 w-14 items-center justify-center rounded-2xl border backdrop-blur-md transition-all duration-300 sm:h-16 sm:w-16",
+                  "group flex h-12 w-12 items-center justify-center rounded-2xl border backdrop-blur-md transition-all duration-300 sm:h-16 sm:w-16",
                   isActive
                     ? "scale-125 border-transparent"
                     : "border-white/10 bg-white/5 hover:scale-110"
@@ -74,7 +76,7 @@ function Orbit({ items, radius, duration, reverse, onHover, active }: OrbitProps
                 }
               >
                 <Icon
-                  className="h-6 w-6 transition-colors sm:h-7 sm:w-7"
+                  className="h-5 w-5 transition-colors sm:h-7 sm:w-7"
                   style={{ color: skill.color }}
                 />
               </button>
@@ -89,6 +91,24 @@ function Orbit({ items, radius, duration, reverse, onHover, active }: OrbitProps
 export function Skills() {
   const [active, setActive] = useState<string | null>(null);
   const activeSkill = SKILLS.find((s) => s.name === active);
+
+  // Measure the galaxy container so orbit radii scale to fit any screen —
+  // fixed pixel radii would overflow narrow phones.
+  const galaxyRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(480);
+
+  useEffect(() => {
+    const el = galaxyRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setSize(entry.contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const innerRadius = Math.round(size * 0.22);
+  const outerRadius = Math.round(size * 0.38);
 
   return (
     <section id="skills" className="relative py-28 sm:py-36">
@@ -106,7 +126,10 @@ export function Skills() {
         <div className="mt-16 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Galaxy */}
           <Reveal>
-            <div className="relative mx-auto aspect-square w-full max-w-[520px]">
+            <div
+              ref={galaxyRef}
+              className="relative mx-auto aspect-square w-full max-w-[520px]"
+            >
               {/* Central core */}
               <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
                 <div className="relative flex h-28 w-28 items-center justify-center sm:h-32 sm:w-32">
@@ -125,14 +148,14 @@ export function Skills() {
 
               <Orbit
                 items={INNER}
-                radius={120}
+                radius={innerRadius}
                 duration={38}
                 onHover={setActive}
                 active={active}
               />
               <Orbit
                 items={OUTER}
-                radius={210}
+                radius={outerRadius}
                 duration={60}
                 reverse
                 onHover={setActive}
@@ -143,7 +166,7 @@ export function Skills() {
 
           {/* Details / legend */}
           <Reveal direction="left">
-            <div className="rounded-3xl glass-strong p-8">
+            <div className="rounded-3xl glass-strong p-6 sm:p-8">
               <motion.div
                 key={activeSkill?.name ?? "idle"}
                 initial={{ opacity: 0, y: 10 }}
