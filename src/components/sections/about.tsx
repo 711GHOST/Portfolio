@@ -26,9 +26,9 @@ export function About() {
                   Two worlds, one engineer.
                 </h3>
                 <p className="mt-4 text-foreground/70">
-                  I&apos;ve shipped enterprise-grade automation at{" "}
+                  I&apos;ve shipped enterprise-grade automation while working for{" "}
                   <span className="text-neon-cyan">TCS</span>, and I build
-                  cutting-edge AI research projects - from emotion-aware music
+                  cutting-edge AI research projects now - from emotion-aware music
                   to autonomous research agents.
                 </p>
                 <p className="mt-4 text-foreground/70">

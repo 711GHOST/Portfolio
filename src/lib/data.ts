@@ -28,7 +28,7 @@ export const PROFILE = {
   ],
   tagline: "I build AI systems that feel like the future.",
   intro:
-    "Enterprise-grade software engineer at TCS by day, cutting-edge AI researcher by night. I turn messy data and hard problems into products that feel effortless.",
+    "Worked as an Enterprise-grade software engineer at TCS. Currently, I turn messy data and hard problems into products that feel effortless.",
   email: "shwetanshusood9102001@gmail.com",
   location: "India",
   socials: {
@@ -99,7 +99,7 @@ export const ABOUT_TIMELINE: TimelineItem[] = [
     title: "Building the Future",
     subtitle: "AI Product Engineer",
     description:
-      "Shipping full-stack AI products - from emotion-aware music to autonomous research agents.",
+      "Developing full-stack AI products - from emotion-aware music to autonomous research agents.",
   },
 ];
 
