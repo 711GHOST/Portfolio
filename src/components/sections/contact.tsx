@@ -18,7 +18,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { Magnetic } from "@/components/shared/magnetic";
 
-// Formspree endpoint — submissions land in your inbox.
+// Formspree endpoint - submissions land in your inbox.
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvdwdpk";
 
 type Status = "idle" | "sending" | "success" | "error";
@@ -176,7 +176,7 @@ export function Contact() {
                       className="flex items-center gap-2 font-mono text-xs text-green-400"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      Transmission received — I&apos;ll reply within 24 hours.
+                      Transmission received - I&apos;ll reply within 24 hours.
                     </motion.p>
                   )}
                   {status === "error" && (

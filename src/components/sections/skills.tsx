@@ -92,7 +92,7 @@ export function Skills() {
   const [active, setActive] = useState<string | null>(null);
   const activeSkill = SKILLS.find((s) => s.name === active);
 
-  // Measure the galaxy container so orbit radii scale to fit any screen —
+  // Measure the galaxy container so orbit radii scale to fit any screen -
   // fixed pixel radii would overflow narrow phones.
   const galaxyRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(480);

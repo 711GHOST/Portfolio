@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 /**
  * A large soft radial glow that follows the cursor across the whole page,
  * giving the UI a living, reactive feel. Pure CSS transform - GPU friendly.
- * Only mounts on fine-pointer (mouse) devices — on touch it would just be a
+ * Only mounts on fine-pointer (mouse) devices - on touch it would just be a
  * dead 600px blob that also overflows the viewport.
  */
 export function MouseGlow() {
